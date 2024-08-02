@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Put, Delete, Param, Body } from "@nestjs/common";
+import { Controller, Get, Post, Put, Delete, Param, Body, ValidationPipe } from "@nestjs/common";
 import { ProductService } from "./product.service";
 import { ResponseData } from "src/global/globalClass";
 import { HttpMessage, HttpStatus } from "src/global/globalEnum";
@@ -21,7 +21,7 @@ export class ProductController {
     }
 
     @Post()
-    createProduct(@Body() poroductDto: ProductDto): ResponseData<ProductDto> {
+    createProduct(@Body(new ValidationPipe) poroductDto: ProductDto): ResponseData<ProductDto> {
         try {
             return new ResponseData<ProductDto>(poroductDto, HttpStatus.SUCCESS, HttpMessage.SUCCESS);
             // return new ResponseData<ProductDto>(this.productService.createProduct(), HttpStatus.SUCCESS, HttpMessage.SUCCESS);
