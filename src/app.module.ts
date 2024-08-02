@@ -6,6 +6,7 @@ import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ProductModule } from './modules/products/product.module';
 import { DataSource } from 'typeorm';
+import { UserEntity } from './entities/users.entity';
 
 @Module({
   imports: [
@@ -17,8 +18,8 @@ import { DataSource } from 'typeorm';
       port: 3308,
       username: 'root',
       password: 'root',
-      database: 'api01',
-      entities: [],
+      database: 'apis',
+      entities: [UserEntity],
       synchronize: true,
     }),
   ],
