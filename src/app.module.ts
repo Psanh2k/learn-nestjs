@@ -3,22 +3,25 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ProductModule } from './modules/products/product.module';
+import { DataSource } from 'typeorm';
 
 @Module({
   imports: [
-    ProductModule
-    // TypeOrmModule.forRoot({
-    //   type: 'mysql',
-    //   host: 'localhost',
-    //   port: 3306,
-    //   username: 'root',
-    //   password: 'root',
-    //   database: 'test',
-    //   entities: [],
-    //   synchronize: true,
-    // }),
+    ProductModule,
+    TypeOrmModule.forRoot({
+      type: 'mysql',
+      host: 'localhost',
+      port: 3308,
+      username: 'root',
+      password: 'root',
+      database: 'api01',
+      entities: [],
+      synchronize: true,
+    }),
   ],
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {}
+export class AppModule {
+  constructor(private dataSource: DataSource) {}
+}
