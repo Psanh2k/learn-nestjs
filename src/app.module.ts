@@ -1,12 +1,12 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { ProjectController } from './project/project.controller';
-import { ProjectService } from './project/project.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { ProductModule } from './modules/products/product.module';
 
 @Module({
   imports: [
+    ProductModule
     // TypeOrmModule.forRoot({
     //   type: 'mysql',
     //   host: 'localhost',
@@ -18,7 +18,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
     //   synchronize: true,
     // }),
   ],
-  controllers: [AppController, ProjectController],
-  providers: [AppService, ProjectService],
+  controllers: [AppController],
+  providers: [AppService],
 })
 export class AppModule {}
