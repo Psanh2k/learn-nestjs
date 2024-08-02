@@ -21,7 +21,8 @@ export class ProductController {
     }
 
     @Post()
-    createProduct(@Body(new ValidationPipe) poroductDto: ProductDto): ResponseData<ProductDto> {
+    // @Body(new ValidationPipe)
+    createProduct(@Body() poroductDto: ProductDto): ResponseData<ProductDto> {
         try {
             return new ResponseData<ProductDto>(poroductDto, HttpStatus.SUCCESS, HttpMessage.SUCCESS);
             // return new ResponseData<ProductDto>(this.productService.createProduct(), HttpStatus.SUCCESS, HttpMessage.SUCCESS);
