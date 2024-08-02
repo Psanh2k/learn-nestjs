@@ -1,3 +1,5 @@
+import { UsersService } from './modules/users/users.service';
+import { UsersModule } from './modules/users/users.module';
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
@@ -7,6 +9,7 @@ import { DataSource } from 'typeorm';
 
 @Module({
   imports: [
+    UsersModule,
     ProductModule,
     TypeOrmModule.forRoot({
       type: 'mysql',
@@ -23,5 +26,5 @@ import { DataSource } from 'typeorm';
   providers: [AppService],
 })
 export class AppModule {
-  constructor(private dataSource: DataSource) {}
+  constructor(private dataSource: DataSource) { }
 }
