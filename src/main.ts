@@ -7,7 +7,7 @@ import { ValidationPipe } from './validation.pipe';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   // app.useGlobalPipes(new ValidationPipe)
-  await app.listen(3000);
+  await app.listen(6000);
 
   if (module.hot) {
     module.hot.accept();

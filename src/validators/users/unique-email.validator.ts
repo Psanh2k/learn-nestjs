@@ -1,18 +1,27 @@
-import { Injectable } from '@nestjs/common';
-import { ValidationArguments, ValidatorConstraint, ValidatorConstraintInterface } from 'class-validator';
-import { UsersService } from 'src/modules/users/users.service';
+import { ValidatorConstraint, ValidatorConstraintInterface, ValidationArguments, registerDecorator, ValidationOptions } from 'class-validator';
+import { getRepository } from 'typeorm';
 
 @ValidatorConstraint({ async: true })
-@Injectable()
-export class UniqueEmailValidator implements ValidatorConstraintInterface {
-  constructor(private readonly usersService: UsersService) {}
-
-  async validate(email: string, args: ValidationArguments): Promise<boolean> {
-      const user = await this.usersService.findUserByEmail(email);
-      return !user;
+export class IsUniqueConstraint implements ValidatorConstraintInterface {
+  async validate(value: any, args: ValidationArguments) {
+    const repository = getRepository(args.constraints[0]);
+    const user = await repository.findOne({ where: { [args.property]: value } });
+    return !user;
   }
 
-  defaultMessage(args: ValidationArguments): string {
-      return 'Email $value already exists. Choose another email.';
+  defaultMessage(args: ValidationArguments) {
+    return `${args.property} is already in use`;
   }
+}
+
+export function IsUnique(entity: Function, validationOptions?: ValidationOptions) {
+  return function (object: Object, propertyName: string) {
+    registerDecorator({
+      target: object.constructor,
+      propertyName: propertyName,
+      options: validationOptions,
+      constraints: [entity],
+      validator: IsUniqueConstraint,
+    });
+  };
 }
