@@ -10,11 +10,12 @@ export class UsersController {
     constructor(private readonly usersService: UsersService) {}
 
     @Get()
-    getProducts(): ResponseData<UserEntity> {
+    async getAllUsers(): Promise<ResponseData<UserEntity[]>> {
         try {
-            return new ResponseData<UserEntity>(this.usersService.findAll(), HttpStatus.SUCCESS, HttpMessage.SUCCESS);
+            const users = await this.usersService.findAllUsers();
+            return new ResponseData<UserEntity[]>(users, HttpStatus.SUCCESS, HttpMessage.SUCCESS);
         } catch (error) {
-            return new ResponseData<UserEntity>(null, HttpStatus.ERROR, HttpMessage.ERROR);
+            return new ResponseData<UserEntity[]>(null, HttpStatus.ERROR, HttpMessage.ERROR);
         }
     }
 }

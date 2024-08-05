@@ -4,14 +4,26 @@ import { BaseEntity, Column, Entity, PrimaryColumn, Timestamp } from "typeorm";
 
 export class UserEntity extends BaseEntity {
     @PrimaryColumn()
-    id: number;
+    id?: number;
 
     @Column()
-    name: string
-    email: string
-    email_verified_at: Timestamp
-    password: string
-    remember_token: string
-    created_at: Timestamp
-    updated_at: Timestamp
+    name?: string;
+
+    @Column()
+    email?: string;
+
+    @Column()
+    password?: string;
+
+    @Column({ nullable: true})
+    google_id?: string;
+
+    @Column()
+    is_admin?: number;
+
+    @Column()
+    is_super?: number;
+
+    @Column({ nullable: true})
+    remember_token?: string;
 }

@@ -18,7 +18,7 @@ import { UserEntity } from './entities/users.entity';
       port: 3308,
       username: 'root',
       password: 'root',
-      database: 'apis',
+      database: 'project_k4',
       entities: [UserEntity],
       synchronize: true,
     }),
