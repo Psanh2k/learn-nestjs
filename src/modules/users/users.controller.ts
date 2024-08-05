@@ -3,7 +3,6 @@ import { UsersService } from './users.service';
 import { ResponseData } from 'src/global/globalClass';
 import { HttpMessage, HttpStatus } from 'src/global/globalEnum';
 import { UserEntity } from 'src/entities/users.entity';
-import { Logger } from '@nestjs/common';
 import { createLogger } from 'src/logger.config';
 
 @Controller('users')
