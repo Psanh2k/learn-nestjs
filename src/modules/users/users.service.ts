@@ -7,11 +7,11 @@ import { Repository } from 'typeorm';
 @Injectable()
 export class UsersService {
     constructor(
-        @InjectRepository(UserEntity)
-        private readonly userRepository: Repository<UserEntity>,
-      ) {}
+      @InjectRepository(UserEntity)
+      private readonly userRepository: Repository<UserEntity>,
+    ) {}
     
-      async findAllUsers(): Promise<UserEntity[]> {
-        return this.userRepository.find();
-      }
+    async findAllUsers(): Promise<UserEntity[]> {
+      return this.userRepository.find();
+    }
 }
