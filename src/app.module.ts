@@ -7,6 +7,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ProductModule } from './modules/products/product.module';
 import { DataSource } from 'typeorm';
 import { UserEntity } from './entities/users.entity';
+import { WinstonModule } from 'nest-winston';
+import * as winston from 'winston';
 
 @Module({
   imports: [
@@ -21,6 +23,11 @@ import { UserEntity } from './entities/users.entity';
       database: 'project_k4',
       entities: [UserEntity],
       synchronize: true,
+    }),
+    WinstonModule.forRoot({
+      transports: [
+        new winston.transports.Console(),
+      ],
     }),
   ],
   controllers: [AppController],

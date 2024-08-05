@@ -4,16 +4,18 @@ import { ResponseData } from "src/global/globalClass";
 import { HttpMessage, HttpStatus } from "src/global/globalEnum";
 import { Product } from "src/models/product.model";
 import { ProductDto } from "src/dto/product.dto";
+import { createLogger } from 'src/logger.config';
 
 @Controller('products')
 
 export class ProductController {
-
+    private readonly logger = createLogger('ProductController');
     constructor(private readonly productService: ProductService) {}
 
     @Get()
     getProducts(): ResponseData<Product[]> {
         try {
+            this.logger.info(`Products fetched: ${JSON.stringify(this.productService.getProducts())}`);
             return new ResponseData<Product[]>(this.productService.getProducts(), HttpStatus.SUCCESS, HttpMessage.SUCCESS);
         } catch (error) {
             return new ResponseData<Product[]>(null, HttpStatus.ERROR, HttpMessage.ERROR);
