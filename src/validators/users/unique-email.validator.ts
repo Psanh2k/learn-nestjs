@@ -1,27 +1,33 @@
-import { ValidatorConstraint, ValidatorConstraintInterface, ValidationArguments, registerDecorator, ValidationOptions } from 'class-validator';
-import { getRepository } from 'typeorm';
+import { registerDecorator, ValidationOptions, ValidatorConstraint, ValidatorConstraintInterface } from 'class-validator';
+import { Inject, Injectable } from '@nestjs/common';
+import { UsersService } from 'src/modules/users/users.service';
+import { createLogger } from 'src/logger.config';
 
 @ValidatorConstraint({ async: true })
-export class IsUniqueConstraint implements ValidatorConstraintInterface {
-  async validate(value: any, args: ValidationArguments) {
-    const repository = getRepository(args.constraints[0]);
-    const user = await repository.findOne({ where: { [args.property]: value } });
+@Injectable()
+export class IsEmailUniqueConstraint implements ValidatorConstraintInterface {
+  private readonly logger = createLogger('LogRequest');
+  constructor(@Inject(UsersService) private readonly usersService: UsersService) {}
+
+  async validate(email: string): Promise<boolean> {
+    this.logger.error(`Error fetching users: ${this.usersService}`);
+    const user = await this.usersService.findUserByEmail(email);
     return !user;
   }
 
-  defaultMessage(args: ValidationArguments) {
-    return `${args.property} is already in use`;
+  defaultMessage(): string {
+    return 'Email $value is already taken';
   }
 }
 
-export function IsUnique(entity: Function, validationOptions?: ValidationOptions) {
+export function IsEmailUnique(validationOptions?: ValidationOptions) {
   return function (object: Object, propertyName: string) {
     registerDecorator({
       target: object.constructor,
       propertyName: propertyName,
       options: validationOptions,
-      constraints: [entity],
-      validator: IsUniqueConstraint,
+      constraints: [],
+      validator: IsEmailUniqueConstraint,
     });
   };
 }

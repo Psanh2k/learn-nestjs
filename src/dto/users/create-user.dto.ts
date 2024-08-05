@@ -1,6 +1,5 @@
 import { IsString, IsEmail, IsNotEmpty, IsNumber, IsEmpty, Validate } from 'class-validator';
-import { UserEntity } from 'src/entities/users.entity';
-import { IsUnique } from 'src/validators/users/unique-email.validator';
+import { IsEmailUnique } from 'src/validators/users/unique-email.validator';
 import { IsNull } from 'typeorm';
 
 export class CreateUserDto {
@@ -11,7 +10,7 @@ export class CreateUserDto {
   @IsString()
   @IsEmail()
   @IsNotEmpty()
-  @IsUnique(UserEntity, { message: 'Email is already registered' })
+  @IsEmailUnique()
   email: string;
 
   @IsString()

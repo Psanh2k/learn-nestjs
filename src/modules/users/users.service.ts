@@ -39,8 +39,6 @@ export class UsersService {
     }
 
     async findUserByEmail(email: string): Promise<UserEntity | null> {
-      console.log(email);
-      
       return this.userRepository.findOne({ where: { email } });
     }
 }
