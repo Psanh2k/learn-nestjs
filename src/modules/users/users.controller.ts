@@ -27,7 +27,12 @@ export class UsersController {
     async getUserById(@Param('id', ParseIntPipe) id: number): Promise<ResponseData<UserEntity>> {
         try {
             const user = await this.usersService.findUserById(id);
-            return new ResponseData<UserEntity>(user, HttpStatus.SUCCESS, HttpMessage.SUCCESS);
+
+            if (user) {
+                return new ResponseData<UserEntity>(user, HttpStatus.SUCCESS, HttpMessage.SUCCESS);
+            }
+
+            return new ResponseData<UserEntity>(user, HttpStatus.NOT_FOUND, HttpMessage.NOT_FOUND);
         } catch (error) {
             this.logger.error(`Error fetching user: ${error.message}`);
             return new ResponseData<UserEntity>(null, HttpStatus.ERROR, HttpMessage.ERROR);
