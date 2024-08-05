@@ -1,9 +1,10 @@
-import { Controller, Get, Param, ParseIntPipe } from '@nestjs/common';
+import { Body, Controller, Get, Param, ParseIntPipe, Post, ValidationPipe } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { ResponseData } from 'src/global/globalClass';
 import { HttpMessage, HttpStatus } from 'src/global/globalEnum';
 import { UserEntity } from 'src/entities/users.entity';
 import { createLogger } from 'src/logger.config';
+import { CreateUserDto } from 'src/dto/users/create-user.dto';
 
 @Controller('users')
 export class UsersController {
@@ -34,6 +35,18 @@ export class UsersController {
             return new ResponseData<UserEntity>(user, HttpStatus.NOT_FOUND, HttpMessage.NOT_FOUND);
         } catch (error) {
             this.logger.error(`Error fetching user: ${error.message}`);
+            return new ResponseData<UserEntity>(null, HttpStatus.ERROR, HttpMessage.ERROR);
+        }
+    }
+
+    @Post()
+    async createUser(@Body(new ValidationPipe) createUserDto: CreateUserDto): Promise<ResponseData<UserEntity>> {
+        try {
+            const user = await this.usersService.createUser(createUserDto);
+            
+            return new ResponseData<UserEntity>(user, HttpStatus.SUCCESS, 'User created successfully');
+        } catch (error) {
+            this.logger.error(`Error create user: ${error.message}`);
             return new ResponseData<UserEntity>(null, HttpStatus.ERROR, HttpMessage.ERROR);
         }
     }
