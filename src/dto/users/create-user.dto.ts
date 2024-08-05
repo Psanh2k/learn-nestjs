@@ -10,7 +10,7 @@ export class CreateUserDto {
   @IsString()
   @IsEmail()
   @IsNotEmpty()
-  @IsEmailUnique()
+  // @IsEmailUnique()
   email: string;
 
   @IsString()
