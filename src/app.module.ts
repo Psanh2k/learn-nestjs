@@ -9,20 +9,29 @@ import { DataSource } from 'typeorm';
 import { UserEntity } from './entities/users.entity';
 import { WinstonModule } from 'nest-winston';
 import * as winston from 'winston';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 
 @Module({
   imports: [
     UsersModule,
     ProductModule,
-    TypeOrmModule.forRoot({
-      type: 'mysql',
-      host: 'localhost',
-      port: 3308,
-      username: 'root',
-      password: 'root',
-      database: 'project_k4',
-      entities: [UserEntity],
-      synchronize: true,
+    ConfigModule.forRoot({
+      isGlobal: true,
+    }),
+    TypeOrmModule.forRootAsync({
+      imports: [ConfigModule],
+      useFactory: (configService: ConfigService) => ({
+        type: 'mysql',
+        host: configService.get<string>('DB_HOST', 'localhost'),
+        port: configService.get<number>('DB_PORT', 3308),
+        username: configService.get<string>('DB_USERNAME', 'root'),
+        password: configService.get<string>('DB_PASSWORD', 'root'),
+        database: configService.get<string>('DB_DATABASE', 'project_k4'),
+        entities: [UserEntity],
+        synchronize: true,
+        logging: true,
+      }),
+      inject: [ConfigService],
     }),
     WinstonModule.forRoot({
       transports: [
