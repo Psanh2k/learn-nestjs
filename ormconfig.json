@@ -1,0 +1,14 @@
+{
+    "type": "mysql",
+    "host": "localhost",
+    "port": 3308,
+    "username": "root",
+    "password": "root",
+    "database": "project_k4",
+    "entities": ["dist/**/*.entity.js"],
+    "migrations": ["dist/migrations/*.js"],
+    "cli": {
+      "migrationsDir": "src/migrations"
+    }
+  }
+  
